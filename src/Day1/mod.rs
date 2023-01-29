@@ -6,6 +6,7 @@ pub fn part_1() {
     let _lines = parse_file("src/Day1/input.txt");
     let mut _sum = 0;
     let mut _last = 0;
+
     for line in _lines {
         let num = line.trim().parse::<i32>().unwrap();
         if _last > 0 && num > _last {
@@ -17,10 +18,9 @@ pub fn part_1() {
     println!("Part 1: {}", _sum);
 }
 
-pub fn part_2(){
+pub fn part_2() {
 
     let _lines = parse_file("src/Day1/input.txt");
-   
     let mut _sum = 0;
     let mut _last = 0;
     
