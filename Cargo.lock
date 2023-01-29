@@ -7,6 +7,7 @@ name = "AoC2021"
 version = "0.1.0"
 dependencies = [
  "itertools",
+ "pipeline",
 ]
 
 [[package]]
@@ -23,3 +24,9 @@ checksum = "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473"
 dependencies = [
  "either",
 ]
+
+[[package]]
+name = "pipeline"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d15b6607fa632996eb8a17c9041cb6071cb75ac057abd45dece578723ea8c7c0"
