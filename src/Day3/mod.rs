@@ -14,6 +14,19 @@ fn find_most_common(vertical_len: usize, sum : Vec<u32>) -> Vec<i32>{
          }
     }
     arr
+}fn find_most_common_or_eq(vertical_len: usize, sum : Vec<u32>) -> Vec<i32>{
+    let len = vertical_len;
+    let comp = (len as f64 / 2.0).trunc() as u32;
+    let mut arr: Vec<i32>  = Vec::new();
+    for (_i, &val) in sum.iter().enumerate() {
+         if val >= comp   {
+            arr.push(1);
+         }
+         else {
+            arr.push(0);
+         }
+    }
+    arr
 }
 
 fn accumulate_vertical(bits_per_line: Vec<Vec<u32>>) -> Vec<u32>{
@@ -85,6 +98,7 @@ pub fn part_1() {
     let bits_per_line = string_to_bits( lines);
     
     let sum = accumulate_vertical(bits_per_line);
+ 
     let gamma_arr = find_most_common(length.len(), sum);
     let epsilon_arr = flip_bits(gamma_arr.clone());
    
@@ -95,6 +109,10 @@ pub fn part_1() {
     println!("Part 1: {}", _res);
 }
 
+fn test_eq(_acc: Vec<u32>, v_len: usize, i: usize)-> bool{
+    print!("{} {} {} ", _acc[i], v_len, _acc[i]/2);
+    _acc[i]/2 == v_len as u32
+}
 pub fn part_2() {
 
     let lines = parse_file("src/Day3/test.txt");
@@ -105,7 +123,11 @@ pub fn part_2() {
     // let mut bits_len = bits_per_line.clone();
     let sdf = bits_per_line.clone();
      let sum = accumulate_vertical(sdf);
-     let sp_bits = find_most_common(vec.len(), sum);
+
+
+    
+
+     let sp_bits = find_most_common_or_eq(vec.len(), sum);
     println!("sp_bits {:?}", sp_bits);
     
     // for i in bits_len.iter().enumerate() {
@@ -114,17 +136,27 @@ pub fn part_2() {
     // let mut compare = 
     
     for i in bits_per_line[0].iter().enumerate() {
-
+        println!("iter {:?}", i.0);
         if vec.len() == 1 {
             break;
         }
-
-        println!("iter {:?}", i.0);
-        let len = vec.clone();
+        
+        
+        // let len = vec.clone();
         let acc = accumulate_vertical(vec.clone());
-        let bits =  find_most_common(len.len(), acc);
+        let _acc = acc.clone();
+        let eq = test_eq(acc, vec.len(), i.0);
+        let bits =  find_most_common(vec.len(), _acc);
+        println!("bits {:?}", bits);
         println!("vec {:?}", vec);
-        vec.retain(|x| x[i.0] == bits[i.0] as u32);
+        println!("eq {:?}", eq);
+        vec.retain(|x| 
+            if !eq { 
+             x[i.0] == (bits[i.0] as u32)
+            } else {
+                x[i.0] == 1
+            }
+            );
     }
         //TODO: geht nicht
 
@@ -132,7 +164,7 @@ pub fn part_2() {
     // println!("bits {:?}", bits);
     // let oxygen_lut = eval_to_bits(length, sum);
     // let carbon_lut = flip_bits(oxygen_lut.clone());
-    println!("vec {:?}", vec);
+    println!("vec after {:?}", vec);
     let ox_bits = vec[0].clone();
     let oxygen = accumulate_to_num_u32(ox_bits);
     let carbon_dioxide = 1;
