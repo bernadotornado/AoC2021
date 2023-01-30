@@ -1,12 +1,12 @@
 use crate::Common::{parse_file};
-use std::f64;
+use std::{f64, vec};
 
-fn find_most_common(length: Vec<String>, sum : Vec<u32>) -> Vec<i32>{
-    let len = length.len();
+fn find_most_common(vertical_len: usize, sum : Vec<u32>) -> Vec<i32>{
+    let len = vertical_len;
     let comp = (len as f64 / 2.0).trunc() as u32;
     let mut arr: Vec<i32>  = Vec::new();
     for (_i, &val) in sum.iter().enumerate() {
-         if val > comp  {
+         if val > comp   {
             arr.push(1);
          }
          else {
@@ -69,6 +69,13 @@ fn accumulate_to_num(arr: Vec<i32>)->i32{
     }
     gamma
 }
+fn accumulate_to_num_u32(arr: Vec<u32>)->u32{
+    let mut gamma = 0;
+    for i in 0..arr.len() {
+        gamma += arr[i] * 2_u32.pow((arr.len()  - i - 1) as u32);
+    }
+    gamma
+}
 
 pub fn part_1() { 
 
@@ -78,7 +85,7 @@ pub fn part_1() {
     let bits_per_line = string_to_bits( lines);
     
     let sum = accumulate_vertical(bits_per_line);
-    let gamma_arr = find_most_common(length, sum);
+    let gamma_arr = find_most_common(length.len(), sum);
     let epsilon_arr = flip_bits(gamma_arr.clone());
    
     let gamma = accumulate_to_num(gamma_arr);
@@ -91,33 +98,44 @@ pub fn part_1() {
 pub fn part_2() {
 
     let lines = parse_file("src/Day3/test.txt");
-    let length = lines.clone();
+    // let length = lines.clone();
     let bits_per_line = string_to_bits(lines);
-    let mut bit = bits_per_line.clone();
-    let mut bits_len = bits_per_line.clone();
-    let sum = accumulate_vertical(bits_per_line);
-    let bits = find_most_common(length, sum);
+    let mut vec = bits_per_line.clone();
+    // let mut bit = bits_per_line.clone();
+    // let mut bits_len = bits_per_line.clone();
+    let sdf = bits_per_line.clone();
+     let sum = accumulate_vertical(sdf);
+     let sp_bits = find_most_common(vec.len(), sum);
+    println!("sp_bits {:?}", sp_bits);
     
     // for i in bits_len.iter().enumerate() {
     //     bit.retain(|x| x.get(i.0) == sum.get(i.0));
     // }
     // let mut compare = 
-    for i in bits.iter().enumerate() {
+    
+    for i in bits_per_line[0].iter().enumerate() {
+
+        if vec.len() == 1 {
+            break;
+        }
+
         println!("iter {:?}", i.0);
-        // if i.0 >= 5 {
-        //     break;
-        // }
-        
-        bit.retain(|x| x[i.0] == bits[i.0] as u32);
+        let len = vec.clone();
+        let acc = accumulate_vertical(vec.clone());
+        let bits =  find_most_common(len.len(), acc);
+        println!("vec {:?}", vec);
+        vec.retain(|x| x[i.0] == bits[i.0] as u32);
     }
         //TODO: geht nicht
 
-    println!("bit {:?}", bit);
-    println!("bits {:?}", bits);
+    // println!("bit {:?}", bit);
+    // println!("bits {:?}", bits);
     // let oxygen_lut = eval_to_bits(length, sum);
     // let carbon_lut = flip_bits(oxygen_lut.clone());
-    let oxygen = 0;
-    let carbon_dioxide = 0;
+    println!("vec {:?}", vec);
+    let ox_bits = vec[0].clone();
+    let oxygen = accumulate_to_num_u32(ox_bits);
+    let carbon_dioxide = 1;
     let _res = oxygen * carbon_dioxide;
     println!("Part 2: {}", _res);
 }
