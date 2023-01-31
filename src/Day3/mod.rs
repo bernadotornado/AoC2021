@@ -14,6 +14,7 @@ fn find_most_common(vertical_len: usize, sum: Vec<u32>) -> Vec<i32> {
     }
     arr
 }
+
 fn find_most_common_or_eq(vertical_len: usize, sum: Vec<u32>) -> Vec<i32> {
     let len = vertical_len;
     let comp = (len as f64 / 2.0).trunc() as u32;
@@ -86,16 +87,13 @@ fn accumulate_to_num_u32(arr: Vec<u32>) -> u32 {
 }
 
 pub fn part_1() {
+       
     let lines = parse_file("src/Day3/input.txt");
     let length = lines.clone();
-
     let bits_per_line = string_to_bits(lines);
-
     let sum = accumulate_vertical(bits_per_line);
-
     let gamma_arr = find_most_common(length.len(), sum);
     let epsilon_arr = flip_bits(gamma_arr.clone());
-
     let gamma = accumulate_to_num(gamma_arr);
     let epsilon = accumulate_to_num(epsilon_arr);
 
@@ -104,8 +102,13 @@ pub fn part_1() {
 }
 
 fn test_eq(_acc: Vec<u32>, v_len: usize, i: usize) -> bool {
-    print!("{} {} {} ", _acc[i], v_len, _acc[i] / 2);
-    _acc[i] / 2 == v_len as u32
+    if v_len % 2 != 0 {
+        return false;
+    }
+
+    print!("test_eq: {} {} {} \n", _acc[i], v_len, _acc[i] / 2);
+     v_len  as u32 / _acc[i]  == 2
+    
 }
 pub fn part_2() {
     let lines = parse_file("src/Day3/test.txt");
