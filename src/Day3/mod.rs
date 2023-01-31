@@ -111,9 +111,10 @@ fn test_eq(_acc: Vec<u32>, v_len: usize, i: usize) -> bool {
     
 }
 pub fn part_2() {
-    let lines = parse_file("src/Day3/test.txt");
+    let lines = parse_file("src/Day3/input.txt");
     let bits_per_line = string_to_bits(lines);
     let mut vec = bits_per_line.clone();
+    let mut vec2 = bits_per_line.clone();
     let sdf = bits_per_line.clone();
     let sum = accumulate_vertical(sdf);
     let sp_bits = find_most_common_or_eq(vec.len(), sum);
@@ -142,9 +143,36 @@ pub fn part_2() {
     }
 
     println!("vec after {:?}", vec);
+
+
+    for i in bits_per_line[0].iter().enumerate() {
+        println!("iter {:?}", i.0);
+        if vec2.len() == 1 {
+            break;
+        }
+
+        let acc = accumulate_vertical(vec2.clone());
+        let _acc = acc.clone();
+        let eq = test_eq(acc, vec2.len(), i.0);
+        let bits = find_most_common(vec2.len(), _acc);
+        let bits = flip_bits(bits);
+        println!("bits {:?}", bits);
+        println!("vec {:?}", vec2);
+        println!("eq {:?}", eq);
+        vec2.retain(|x| {
+            if !eq {
+                x[i.0] == (bits[i.0] as u32)
+            } else {
+                x[i.0] == 0
+            }
+        });
+    }
+
+
     let ox_bits = vec[0].clone();
     let oxygen = accumulate_to_num_u32(ox_bits);
-    let carbon_dioxide = 1;
+    let co2_bits = vec2[0].clone();
+    let carbon_dioxide = accumulate_to_num_u32(co2_bits);
     let _res = oxygen * carbon_dioxide;
     println!("Part 2: {}", _res);
 }
