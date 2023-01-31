@@ -111,14 +111,14 @@ fn test_eq(_acc: Vec<u32>, v_len: usize, i: usize) -> bool {
     
 }
 pub fn part_2() {
-    let lines = parse_file("src/Day3/input.txt");
+    let lines = parse_file("src/Day3/test.txt");
     let bits_per_line = string_to_bits(lines);
     let mut vec = bits_per_line.clone();
     let mut vec2 = bits_per_line.clone();
     let sdf = bits_per_line.clone();
     let sum = accumulate_vertical(sdf);
     let sp_bits = find_most_common_or_eq(vec.len(), sum);
-    println!("sp_bits {:?}", sp_bits);
+    // println!("sp_bits {:?}", sp_bits);
 
     for i in bits_per_line[0].iter().enumerate() {
         println!("iter {:?}", i.0);
@@ -130,9 +130,9 @@ pub fn part_2() {
         let _acc = acc.clone();
         let eq = test_eq(acc, vec.len(), i.0);
         let bits = find_most_common(vec.len(), _acc);
-        println!("bits {:?}", bits);
-        println!("vec {:?}", vec);
-        println!("eq {:?}", eq);
+        // println!("bits {:?}", bits);
+        // println!("vec {:?}", vec);
+        // println!("eq {:?}", eq);
         vec.retain(|x| {
             if !eq {
                 x[i.0] == (bits[i.0] as u32)
@@ -142,7 +142,7 @@ pub fn part_2() {
         });
     }
 
-    println!("vec after {:?}", vec);
+    // println!("vec after {:?}", vec);
 
 
     for i in bits_per_line[0].iter().enumerate() {
@@ -167,6 +167,7 @@ pub fn part_2() {
             }
         });
     }
+    println!("vec2 after {:?}", vec2);
 
 
     let ox_bits = vec[0].clone();
