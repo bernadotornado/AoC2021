@@ -7,6 +7,7 @@ mod Common;
 mod Day1;
 mod Day2;
 mod Day3;
+mod Day4;
 
 fn main() {
     let mut input = String::new();
@@ -19,6 +20,8 @@ fn main() {
         "2:2" => Day2::part_2(),
         "3:1" => Day3::part_1(),
         "3:2" => Day3::part_2(),
+        "4:1" => Day4::part_1(),
+        "4:2" => Day4::part_2(),
 
         _ => println!("Invalid input"),
     }
