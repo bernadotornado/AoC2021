@@ -1,5 +1,5 @@
 use crate::Common::parse_file;
-use std::{f64, vec};
+use std::vec;
 
 type Board = Vec<Vec<i32>>;
 trait Printable {
@@ -11,14 +11,14 @@ impl Printable for Board {
             for col in row {
                 print!("{} ", col);
             }
-            println!("");
+            println!(" ");
         }
     }
 }
 
 
 fn parse_boards (lines: &Vec<String>) -> Vec<Board> {
-    let mut board: Board = vec![vec![]];
+    let mut board: Board = vec![];
     let mut boards: Vec<Board> = vec![];
     for (i, s) in lines.iter().enumerate() {
         if i == 0 || i == 1 {
@@ -34,32 +34,39 @@ fn parse_boards (lines: &Vec<String>) -> Vec<Board> {
                 .collect::<Vec<i32>>());
         }
         else {
-            boards.push(board);
-            board = vec![vec![]];
+            // println!("board: {:?}", board);
+            // if board.len()>0 {
+                boards.push(board);
+                board = vec![];
+            // }
+            
         }
     }
     return boards;
 }
 
-fn mark_board (boards: Vec<Board>, drawn_numbers: Vec<i32>) -> Vec<Vec<i32>>{
-    let mut containing:Vec<Vec<i32>> = vec![vec![]];
-    for board in boards {
-        board.print();
-        
-        
+fn mark_board (board: Board, drawn_numbers: Vec<i32>) -> Vec<Vec<i32>>{
+    let mut marked_board: Board = vec![];
+    // for board in boards {
+    //     board.print();
 
         for (i, row) in board.iter().enumerate() {
+            println!("outer: i {}", i);
+            println!("row: {:?}", row);
+            let mut marked_row: Vec<i32> = vec![];
             for (j, col) in row.iter().enumerate() {
+                println!("inner i:{} j:{}", i, j);
                 if drawn_numbers.contains(&col) {
-                    containing[i].push(1);
+                    marked_row.push(1);
                 }
                 else {
-                    containing[i].push(0);
+                    marked_row.push(0);
                 }
             }
+            marked_board.push(marked_row);
         }
-    }
-    return containing;
+    // }
+    return marked_board;
 }
 
 
@@ -78,12 +85,15 @@ pub fn part_1(){
     let mut numbers_up_to_current:Vec<i32> = vec![];
     for number in drawn_numbers{
         numbers_up_to_current.push(number);
-        let containing = mark_board(boards.clone(), numbers_up_to_current.clone());
-        containing.print();
-    }
+        let n = boards.clone();
+        let mut marked_boards: Vec<Board> = vec![];
+        for board in n {
+            marked_boards.push(mark_board(board, numbers_up_to_current.clone()));
+        }
 
-    
-    
+        // let containing = mark_board(, numbers_up_to_current.clone());
+        // containing.print();
+    }
 }
 
 pub fn part_2(){
